@@ -2,7 +2,8 @@ import Button from "../../components/Button";
 import { useFirebaseUser } from "../../hooks/useFirebaseUser";
 import Card from "../../components/Card";
 import { useEffect, useState } from "react";
-
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../firebase/FirebaseConfig";
 import { useNavigate } from "react-router";
 
 export const LoggedInUser = () => {
@@ -10,16 +11,32 @@ export const LoggedInUser = () => {
   const { user, logout } = useFirebaseUser();
   const [userHasGoogle, setUserHasGoogle] = useState(false);
   const [userHasPassword, setUserHasPassword] = useState(false);
+
+  const [profileData, setProfileData] = useState<{
+    address: string;
+    birthdate: string;
+    age: number;
+  } | null>(null);
+
   useEffect(() => {
     if (!user) {
       return;
     }
-    // Check if the user has Google as a provider
+
+    const fetchProfileData = async () => {
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setProfileData(docSnap.data() as any);
+      }
+    };
+
+    fetchProfileData();
+
     const hasGoogle = user.providerData.some(
       (profile) => profile.providerId === "google.com"
     );
     setUserHasGoogle(hasGoogle);
-    // Check if the user has email/password as a provider
     const hasPassword = user.providerData.some(
       (profile) => profile.providerId === "password"
     );
@@ -39,6 +56,20 @@ export const LoggedInUser = () => {
           <div>
             <b>Your email is:</b> {user?.email}
           </div>
+          {profileData && (
+            <div className="mt-3">
+              <h3>Profile Information:</h3>
+              <p>
+                <b>Address:</b> {profileData.address}
+              </p>
+              <p>
+                <b>Birthdate:</b> {profileData.birthdate}
+              </p>
+              <p>
+                <b>Age:</b> {profileData.age}
+              </p>
+            </div>
+          )}
           <div>
             Add additional login methods:
             {!userHasGoogle && (

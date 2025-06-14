@@ -9,6 +9,9 @@ type Inputs = {
   fullname: string;
   email: string;
   password: string;
+  address: string;
+  birthdate: string;
+  age: number;
 };
 export const RegisterPage = () => {
   const { registerWithFirebase } = useFirebaseUser();
@@ -19,7 +22,7 @@ export const RegisterPage = () => {
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data);
-    registerWithFirebase(data.email, data.password, data.fullname);
+    registerWithFirebase(data.email, data.password, data.fullname, data.address, data.birthdate, data.age);
   };
   return (
     <>
@@ -50,7 +53,26 @@ export const RegisterPage = () => {
               {...register("password", { required: true })}
             />
             {errors.password && <span>This field is required</span>}
+            <Input
+              label="Dirección"
+              type="text"
+              {...register("address", { required: true })}
+            />
+            {errors.address && <span>This field is required</span>}
 
+            <Input
+              label="Fecha de nacimiento"
+              type="date"
+              {...register("birthdate", { required: true })}
+            />
+            {errors.birthdate && <span>This field is required</span>}
+
+            <Input
+              label="Edad"
+              type="number"
+              {...register("age", { required: true, min: 1 })}
+            />
+            {errors.age && <span>Debe ser mayor a 0</span>}
             <Button variant="primary" type="submit">
               Register
             </Button>

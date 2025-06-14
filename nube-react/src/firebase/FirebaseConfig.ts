@@ -1,8 +1,8 @@
-// firebase.ts
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 import * as firebaseui from "firebaseui";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCHtyTxBNUPBmdEbfkL830jTZ4HBcGOzYY",
@@ -17,6 +17,7 @@ const firebaseConfig = {
 export const firebaseApp = initializeApp(firebaseConfig);
 export const firebaseAnalytics = getAnalytics(firebaseApp);
 const firebaseAuth = getAuth(firebaseApp);
+export const db = getFirestore(firebaseApp);
 export const firebaseUi = new firebaseui.auth.AuthUI(firebaseAuth);
 firebaseAuth.useDeviceLanguage();
 export { firebaseAuth };

@@ -14,6 +14,8 @@ import { useEffect, useState } from "react";
 import { firebaseAuth } from "../firebase/FirebaseConfig";
 import { useNavigate } from "react-router";
 import { EmailAuthProvider } from "firebase/auth/web-extension";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase/FirebaseConfig";
 
 export const useFirebaseUser = () => {
   const navigate = useNavigate();
@@ -32,7 +34,6 @@ export const useFirebaseUser = () => {
   const loginWithFirebase = (email: string, password: string) => {
     signInWithEmailAndPassword(firebaseAuth, email, password)
       .then((userCredential) => {
-        // Signed in
         const user = userCredential.user;
         console.log("User signed in:", user);
         navigate("/");
@@ -43,34 +44,45 @@ export const useFirebaseUser = () => {
         console.error("Error signing in:", errorCode, errorMessage);
       });
   };
-  const registerWithFirebase = (
+
+  const registerWithFirebase = async (
     email: string,
     password: string,
-    fullName: string
+    fullName: string,
+    address: string,
+    birthdate: string,
+    age: number
   ) => {
-    createUserWithEmailAndPassword(firebaseAuth, email, password)
-      .then((userCredential) => {
-        // Registered and Signed in
-        const user = userCredential.user;
-
-        console.log("User signed in:", user);
-        updateProfile(user, {
-          displayName: fullName,
-        })
-          .then(() => {
-            console.log("Profile updated successfully");
-            navigate("/");
-          })
-          .catch((error) => {
-            console.error("Error updating profile:", error);
-          });
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error("Error signing in:", errorCode, errorMessage);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(firebaseAuth, email, password);
+      const user = userCredential.user;
+  
+      console.log("User signed in:", user);
+  
+      await updateProfile(user, {
+        displayName: fullName,
       });
-  };
+  
+      console.log("Profile updated successfully");
+  
+      await setDoc(doc(db, "users", user.uid), {
+        fullname: fullName,
+        email: email,
+        address: address,
+        birthdate: birthdate,
+        age: age,
+        createdAt: new Date().toISOString(),
+      });
+  
+      navigate("/");
+    } catch (error: any) {
+      if (error.code === "auth/email-already-in-use") {
+        alert("Este correo electrónico ya está en uso. Intenta con otro.");
+      } else {
+        console.error("Error during registration:", error);
+      }
+    }
+  };  
 
   const loginWithGoogle = () => {
     const provider = new GoogleAuthProvider();
