@@ -1,109 +1,50 @@
+import { useState } from "react";
 import Button from "../../components/Button";
+import { Input } from "../../components/Input";
 import { useFirebaseUser } from "../../hooks/useFirebaseUser";
-import Card from "../../components/Card";
-import { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../firebase/FirebaseConfig";
-import { useNavigate } from "react-router";
+import { usePostRepository } from "../../hooks/usePostRepository";
 
-export const LoggedInUser = () => {
-  const navigate = useNavigate();
-  const { user, logout } = useFirebaseUser();
-  const [userHasGoogle, setUserHasGoogle] = useState(false);
-  const [userHasPassword, setUserHasPassword] = useState(false);
+export default function LoggedInUser() {
+  const { user } = useFirebaseUser();
+  const { posts, createPost, deletePost } = usePostRepository();
+  const [content, setContent] = useState("");
 
-  const [profileData, setProfileData] = useState<{
-    address: string;
-    birthdate: string;
-    age: number;
-  } | null>(null);
-
-  useEffect(() => {
-    if (!user) {
-      return;
-    }
-
-    const fetchProfileData = async () => {
-      const docRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setProfileData(docSnap.data() as any);
-      }
-    };
-
-    fetchProfileData();
-
-    const hasGoogle = user.providerData.some(
-      (profile) => profile.providerId === "google.com"
-    );
-    setUserHasGoogle(hasGoogle);
-    const hasPassword = user.providerData.some(
-      (profile) => profile.providerId === "password"
-    );
-    setUserHasPassword(hasPassword);
-    // for (const profile of user.providerData) {
-    //   console.log("Provider ID:", profile.providerId);
-    // }
-  }, [user]);
-  const onAddEmailSignInClicked = () => {
-    navigate("/linkpassword");
+  const handleCreate = async () => {
+    if (!content.trim()) return;
+    await createPost(content);
+    setContent("");
   };
+
   return (
-    <>
-      <Card>
-        <div>
-          <h1>Welcome to the dashboard {user?.displayName}!</h1>
-          <div>
-            <b>Your email is:</b> {user?.email}
+    <div className="p-4">
+      <div className="mb-4 flex gap-2">
+        <Input
+          placeholder="¿Qué estás pensando?"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        />
+        <Button onClick={handleCreate}>Postear</Button>
+      </div>
+
+      {posts.map((post) => (
+        <div key={post.id} className="border p-3 mb-3 rounded shadow-sm">
+          <div className="flex items-center gap-2 mb-2">
+            {post.photoURL && (
+              <img src={post.photoURL} alt="Avatar" className="w-8 h-8 rounded-full" />
+            )}
+            <span className="font-bold">{post.displayName}</span>
+            <span className="text-xs text-gray-500 ml-auto">
+              {post.createdAt?.toDate?.().toLocaleString?.() ?? "Sin hora"}
+            </span>
           </div>
-          {profileData && (
-            <div className="mt-3">
-              <h3>Profile Information:</h3>
-              <p>
-                <b>Address:</b> {profileData.address}
-              </p>
-              <p>
-                <b>Birthdate:</b> {profileData.birthdate}
-              </p>
-              <p>
-                <b>Age:</b> {profileData.age}
-              </p>
-            </div>
+          <p className="text-sm">{post.content}</p>
+          {user?.uid === post.uid && (
+            <Button onClick={() => deletePost(post.id)} className="mt-2 bg-red-500">
+              Eliminar
+            </Button>
           )}
-          <div>
-            Add additional login methods:
-            {!userHasGoogle && (
-              <div>
-                <Button variant="danger" className="mt-3" onClick={() => {}}>
-                  Add google Sign In
-                </Button>
-              </div>
-            )}
-            {!userHasPassword && (
-              <div>
-                <Button
-                  variant="secondary"
-                  className="mt-3"
-                  onClick={onAddEmailSignInClicked}
-                >
-                  Add email Sign In
-                </Button>
-              </div>
-            )}
-          </div>
         </div>
-        <div>
-          <Button
-            variant="primary"
-            className="mt-3"
-            onClick={() => {
-              logout();
-            }}
-          >
-            Logout
-          </Button>
-        </div>
-      </Card>
-    </>
+      ))}
+    </div>
   );
-};
+}
