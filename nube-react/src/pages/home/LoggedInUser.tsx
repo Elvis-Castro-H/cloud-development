@@ -3,10 +3,12 @@ import Button from "../../components/Button";
 import { Input } from "../../components/Input";
 import { useFirebaseUser } from "../../hooks/useFirebaseUser";
 import { usePostRepository } from "../../hooks/usePostRepository";
+import { useNotifications } from "../../hooks/useNotifications";
 
 export default function LoggedInUser() {
   const { user } = useFirebaseUser();
   const { posts, createPost, deletePost } = usePostRepository();
+  const { notifications, markAsRead } = useNotifications();
   const [content, setContent] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
 
@@ -18,14 +20,33 @@ export default function LoggedInUser() {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4">  
+      <div className="mb-6">
+        <h2 className="text-lg font-bold mb-2">🔔 Notificaciones</h2>
+        {notifications.length === 0 && <p className="text-sm text-gray-500">No hay notificaciones</p>}
+        {notifications.map((n) => (
+          <div key={n.id} className={`p-2 mb-2 border rounded ${n.read ? "bg-gray-100" : "bg-yellow-100"}`}>
+            <div className="flex justify-between items-center">
+              <p className="text-sm">{n.message}</p>
+              {!n.read && (
+                <button
+                  className="text-xs text-blue-600 underline"
+                  onClick={() => markAsRead(n.id)}
+                >
+                  Marcar como leída
+                </button>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
       <div className="mb-4 flex flex-col gap-2">
         <Input
           placeholder="¿Qué estás pensando?"
           value={content}
           onChange={(e) => setContent(e.target.value)}
         />
-        <div>
         <label
           htmlFor="file-upload"
           className="cursor-pointer inline-flex items-center justify-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-md shadow"
@@ -43,10 +64,8 @@ export default function LoggedInUser() {
           }}
           className="hidden"
         />
-      </div>
-
         {imageFile && (
-          <p className="text-xs text-gray-600">
+          <p className="text-xs text-indigo-700 font-medium">
             Imagen seleccionada: {imageFile.name}
           </p>
         )}

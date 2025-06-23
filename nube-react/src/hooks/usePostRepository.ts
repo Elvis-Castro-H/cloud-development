@@ -27,7 +27,7 @@ const uploadImageToCloudinary = async (file: File): Promise<string> => {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("upload_preset", "post_images"); 
-  formData.append("cloud_name", "dnf9b6wun");  
+  formData.append("cloud_name", "dnf9b6wun");   
 
   const res = await axios.post(
     "https://api.cloudinary.com/v1_1/dnf9b6wun/image/upload",
@@ -43,6 +43,8 @@ export const usePostRepository = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const postsCollection = collection(db, "posts");
+  const notificationsCollection = collection(db, "notifications");
+  const usersCollection = collection(db, "users"); 
 
   const loadPosts = async () => {
     setLoading(true);
@@ -61,11 +63,7 @@ export const usePostRepository = () => {
 
     let imageUrl = null;
     if (imageFile) {
-      try {
-        imageUrl = await uploadImageToCloudinary(imageFile);
-      } catch (err) {
-        console.error("Error al subir la imagen", err);
-      }
+      imageUrl = await uploadImageToCloudinary(imageFile);
     }
 
     await addDoc(postsCollection, {
@@ -76,6 +74,35 @@ export const usePostRepository = () => {
       imageUrl,
       createdAt: serverTimestamp(),
     });
+
+    try {
+      const allUsers = await getDocs(usersCollection);
+      const message = `${user.displayName || "Alguien"} publicó un nuevo post`;
+
+      if (allUsers.docs.length === 0) {
+        console.warn("⚠️ No se encontraron usuarios en la colección.");
+      }
+
+      for (const docSnap of allUsers.docs) {
+        const targetId = docSnap.id;
+
+        if (targetId !== user.uid) {
+          const notificationPayload = {
+            userId: targetId,
+            message,
+            timestamp: serverTimestamp(),
+            read: false,
+          };
+
+          await addDoc(notificationsCollection, notificationPayload);
+        } else {
+          console.log("Saltando notificación para sí mismo:", targetId);
+        }
+      }
+    } catch (error) {
+      console.error("ERROR GLOBAL AL CREAR NOTIFICACIONES:", error);
+    }
+
 
     await loadPosts();
   };
