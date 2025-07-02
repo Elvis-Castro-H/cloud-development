@@ -8,10 +8,12 @@ import {
   query,
   orderBy,
   serverTimestamp,
+  where,
 } from "firebase/firestore";
 import { db } from "../firebase/FirebaseConfig";
 import { useFirebaseUser } from "./useFirebaseUser";
 import axios from "axios";
+import { moderateContent } from "../utils/contentModerator";
 
 interface Post {
   id: string;
@@ -26,8 +28,8 @@ interface Post {
 const uploadImageToCloudinary = async (file: File): Promise<string> => {
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("upload_preset", "post_images"); 
-  formData.append("cloud_name", "dnf9b6wun");   
+  formData.append("upload_preset", "post_images");
+  formData.append("cloud_name", "dnf9b6wun");
 
   const res = await axios.post(
     "https://api.cloudinary.com/v1_1/dnf9b6wun/image/upload",
@@ -44,7 +46,8 @@ export const usePostRepository = () => {
 
   const postsCollection = collection(db, "posts");
   const notificationsCollection = collection(db, "notifications");
-  const usersCollection = collection(db, "users"); 
+  const usersCollection = collection(db, "users");
+  const postLikesCollection = collection(db, "postLikes");
 
   const loadPosts = async () => {
     setLoading(true);
@@ -61,6 +64,8 @@ export const usePostRepository = () => {
   const createPost = async (content: string, imageFile?: File) => {
     if (!user) return;
 
+    const safeContent = moderateContent(content);
+
     let imageUrl = null;
     if (imageFile) {
       imageUrl = await uploadImageToCloudinary(imageFile);
@@ -70,7 +75,7 @@ export const usePostRepository = () => {
       uid: user.uid,
       displayName: user.displayName || "Usuario sin nombre",
       photoURL: user.photoURL || null,
-      content,
+      content: safeContent,
       imageUrl,
       createdAt: serverTimestamp(),
     });
@@ -79,36 +84,90 @@ export const usePostRepository = () => {
       const allUsers = await getDocs(usersCollection);
       const message = `${user.displayName || "Alguien"} publicó un nuevo post`;
 
-      if (allUsers.docs.length === 0) {
-        console.warn("⚠️ No se encontraron usuarios en la colección.");
-      }
-
       for (const docSnap of allUsers.docs) {
         const targetId = docSnap.id;
-
         if (targetId !== user.uid) {
-          const notificationPayload = {
+          await addDoc(notificationsCollection, {
             userId: targetId,
             message,
             timestamp: serverTimestamp(),
             read: false,
-          };
-
-          await addDoc(notificationsCollection, notificationPayload);
-        } else {
-          console.log("Saltando notificación para sí mismo:", targetId);
+          });
         }
       }
     } catch (error) {
       console.error("ERROR GLOBAL AL CREAR NOTIFICACIONES:", error);
     }
 
-
     await loadPosts();
   };
 
   const deletePost = async (postId: string) => {
     await deleteDoc(doc(db, "posts", postId));
+    await loadPosts();
+  };
+
+  const likePost = async (postId: string, postOwnerId: string) => {
+    if (!user) return;
+
+    const existingLikesQuery = query(
+      postLikesCollection,
+      where("postId", "==", postId),
+      where("userId", "==", user.uid)
+    );
+    const existingLikesSnap = await getDocs(existingLikesQuery);
+
+    for (const docSnap of existingLikesSnap.docs) {
+      await deleteDoc(doc(db, "postLikes", docSnap.id));
+    }
+
+    await addDoc(postLikesCollection, {
+      postId,
+      userId: user.uid,
+      type: "like",
+    });
+
+    if (postOwnerId !== user.uid) {
+      await addDoc(notificationsCollection, {
+        userId: postOwnerId,
+        message: `${user.displayName} le dio 👍 a tu post`,
+        timestamp: serverTimestamp(),
+        read: false,
+      });
+    }
+
+    await loadPosts();
+  };
+
+  const dislikePost = async (postId: string, postOwnerId: string) => {
+    if (!user) return;
+
+    const existingLikesQuery = query(
+      postLikesCollection,
+      where("postId", "==", postId),
+      where("userId", "==", user.uid)
+    );
+    const existingLikesSnap = await getDocs(existingLikesQuery);
+
+    for (const docSnap of existingLikesSnap.docs) {
+      await deleteDoc(doc(db, "postLikes", docSnap.id));
+    }
+
+    await addDoc(postLikesCollection, {
+      postId,
+      userId: user.uid,
+      type: "dislike",
+    });
+
+    if (postOwnerId !== user.uid) {
+      await addDoc(notificationsCollection, {
+        userId: postOwnerId,
+        message: `${user.displayName} le dio 👎 a tu post`,
+        timestamp: serverTimestamp(),
+        read: false,
+      });
+    }
+
     await loadPosts();
   };
 
@@ -122,5 +181,7 @@ export const usePostRepository = () => {
     createPost,
     deletePost,
     reloadPosts: loadPosts,
+    likePost,
+    dislikePost,
   };
 };
