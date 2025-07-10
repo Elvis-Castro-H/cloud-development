@@ -1,0 +1,78 @@
+.home-page-container {
+  background-color: #121212; 
+  color: #fff; 
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.home-page-title {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #1db954; 
+  font-family: "Spotify Circular", sans-serif;
+}
+
+.genres-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  margin-top: 20px;
+}
+
+.card-container {
+  background-color: #282828;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;  
+  max-width: 220px;  
+  min-height: 320px; 
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-container:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.8);
+}
+
+.card-image {
+  width: 100%;
+  height: 150px; 
+  object-fit: cover;  
+  border-radius: 10px;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  margin-top: 10px;
+  font-family: "Spotify Circular", sans-serif;
+}
+
+.card-link {
+  font-size: 1rem;
+  color: #1db954;
+  margin-top: 15px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.card-link:hover {
+  color: #1ed760; 
+}
+
+.card-container .card-link {
+  font-size: 1.1rem;
+  font-weight: 600;
+}

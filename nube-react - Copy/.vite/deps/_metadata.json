@@ -1,0 +1,103 @@
+{
+  "hash": "209cceee",
+  "configHash": "d841725c",
+  "lockfileHash": "f5b77fb1",
+  "browserHash": "71718039",
+  "optimized": {
+    "react/jsx-dev-runtime": {
+      "src": "../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "b5143316",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "61318288",
+      "needsInterop": true
+    },
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "9a885e62",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.mjs",
+      "file": "react-router-dom.js",
+      "fileHash": "93a15567",
+      "needsInterop": false
+    },
+    "react-router": {
+      "src": "../../node_modules/react-router/dist/development/index.mjs",
+      "file": "react-router.js",
+      "fileHash": "6d946a0a",
+      "needsInterop": false
+    },
+    "firebase/firestore": {
+      "src": "../../node_modules/firebase/firestore/dist/esm/index.esm.js",
+      "file": "firebase_firestore.js",
+      "fileHash": "720d5520",
+      "needsInterop": false
+    },
+    "firebase/auth": {
+      "src": "../../node_modules/firebase/auth/dist/esm/index.esm.js",
+      "file": "firebase_auth.js",
+      "fileHash": "d859bbb6",
+      "needsInterop": false
+    },
+    "firebase/auth/web-extension": {
+      "src": "../../node_modules/firebase/auth/web-extension/dist/esm/index.esm.js",
+      "file": "firebase_auth_web-extension.js",
+      "fileHash": "2662de16",
+      "needsInterop": false
+    },
+    "axios": {
+      "src": "../../node_modules/axios/index.js",
+      "file": "axios.js",
+      "fileHash": "7f7f458d",
+      "needsInterop": false
+    },
+    "firebase/app": {
+      "src": "../../node_modules/firebase/app/dist/esm/index.esm.js",
+      "file": "firebase_app.js",
+      "fileHash": "6052b978",
+      "needsInterop": false
+    },
+    "firebase/analytics": {
+      "src": "../../node_modules/firebase/analytics/dist/esm/index.esm.js",
+      "file": "firebase_analytics.js",
+      "fileHash": "976d1576",
+      "needsInterop": false
+    },
+    "firebaseui": {
+      "src": "../../node_modules/firebaseui/dist/esm.js",
+      "file": "firebaseui.js",
+      "fileHash": "fc316f6c",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-5HNGYYSW": {
+      "file": "chunk-5HNGYYSW.js"
+    },
+    "chunk-5V2EILUC": {
+      "file": "chunk-5V2EILUC.js"
+    },
+    "chunk-TVFQMRVC": {
+      "file": "chunk-TVFQMRVC.js"
+    },
+    "chunk-WIKZAGTW": {
+      "file": "chunk-WIKZAGTW.js"
+    },
+    "chunk-MIKRT7GZ": {
+      "file": "chunk-MIKRT7GZ.js"
+    },
+    "chunk-OLSMJWW6": {
+      "file": "chunk-OLSMJWW6.js"
+    },
+    "chunk-G3PMV62Z": {
+      "file": "chunk-G3PMV62Z.js"
+    }
+  }
+}
