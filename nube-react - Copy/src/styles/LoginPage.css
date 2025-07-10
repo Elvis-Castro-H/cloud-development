@@ -1,7 +1,6 @@
-/* Estilos generales para la página de login */
 .login-page-container {
-  background-color: #121212; /* Fondo oscuro */
-  color: #fff; /* Texto blanco */
+  background-color: #121212; 
+  color: #fff; 
   padding: 40px;
   min-height: 100vh;
   display: flex;
@@ -11,15 +10,13 @@
   font-family: "Spotify Circular", sans-serif;
 }
 
-/* Título de la página */
 .login-page-title {
   font-size: 3rem;
   font-weight: bold;
   margin-bottom: 30px;
-  color: #1db954; /* Verde típico de Spotify */
+  color: #1db954; 
 }
 
-/* Estilo para el contenedor del formulario de login */
 .login-form {
   display: flex;
   flex-direction: column;
@@ -29,10 +26,9 @@
   margin-bottom: 30px;
 }
 
-/* Estilo para los inputs de email y contraseña */
 .input-field {
-  background-color: #282828; /* Fondo oscuro para los inputs */
-  border: 1px solid #333; /* Borde oscuro */
+  background-color: #282828; 
+  border: 1px solid #333; 
   color: #fff;
   padding: 15px;
   border-radius: 5px;
@@ -41,12 +37,11 @@
 }
 
 .input-field:focus {
-  border-color: #1db954; /* Verde Spotify al hacer foco */
+  border-color: #1db954; 
 }
 
-/* Estilo para el botón de login */
 .login-button {
-  background-color: #1db954; /* Verde Spotify */
+  background-color: #1db954; 
   color: white;
   padding: 15px;
   font-size: 1rem;
@@ -57,12 +52,11 @@
 }
 
 .login-button:hover {
-  background-color: #1ed760; /* Verde más brillante al hacer hover */
+  background-color: #1ed760; 
 }
 
-/* Estilo para los botones de login con Google y Facebook */
 .social-login-button {
-  background-color: #4285f4; /* Azul de Google */
+  background-color: #4285f4; 
   color: white;
   padding: 15px;
   font-size: 1rem;
@@ -76,10 +70,9 @@
 }
 
 .social-login-button:hover {
-  background-color: #3367d6; /* Azul más oscuro de Google al hacer hover */
+  background-color: #3367d6; 
 }
 
-/* Estilo para la separación con hr */
 .hr-line {
   margin: 20px 0;
   border: 1px solid #333;

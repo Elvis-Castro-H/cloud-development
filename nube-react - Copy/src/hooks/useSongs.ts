@@ -18,7 +18,7 @@ const useSongs = (artistId: string) => {
     };
 
     fetchSongs();
-  }, [artistId]); // Se ejecuta cuando el artista cambia
+  }, [artistId]);
 
   return songs;
 };

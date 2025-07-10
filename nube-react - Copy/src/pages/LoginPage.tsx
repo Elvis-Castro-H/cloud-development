@@ -15,7 +15,6 @@ const LoginPage = () => {
     <div className="login-page-container">
       <h1 className="login-page-title">Login</h1>
 
-      {/* Login con Email y Contraseña */}
       <div className="login-form">
         <input
           type="email"
@@ -38,14 +37,12 @@ const LoginPage = () => {
 
       <hr className="hr-line" />
 
-      {/* Login con Google */}
       <button onClick={loginWithGoogle} className="social-login-button">
         Login with Google
       </button>
 
       <hr className="hr-line" />
 
-      {/* Login con Facebook */}
       <button onClick={loginWithFacebook} className="social-login-button">
         Login with Facebook
       </button>

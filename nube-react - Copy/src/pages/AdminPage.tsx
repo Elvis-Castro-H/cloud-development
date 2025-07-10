@@ -18,14 +18,11 @@ const AdminPage = () => {
   const [newArtistImage, setNewArtistImage] = useState<File | null>(null);
   const [newSongAudio, setNewSongAudio] = useState<File | null>(null);
 
-  // Verificar si el usuario tiene permisos de admin
-  const isAdmin = user?.email === "castro.huanca.elvis@gmail.com";  // Aquí puedes agregar más lógica de admins
+  const isAdmin = user?.email === "castro.huanca.elvis@gmail.com"; 
 
-  // Cargar los datos de Firestore
   const fetchData = async () => {
     if (!isAdmin) return;
 
-    // Obtener géneros
     const genresCollection = collection(db, "genres");
     const genresSnapshot = await getDocs(genresCollection);
     const genresList = genresSnapshot.docs.map((doc) => ({
@@ -34,7 +31,6 @@ const AdminPage = () => {
     }));
     setGenres(genresList);
 
-    // Obtener artistas
     const artistsCollection = collection(db, "artists");
     const artistsSnapshot = await getDocs(artistsCollection);
     const artistsList = artistsSnapshot.docs.map((doc) => ({
@@ -43,7 +39,6 @@ const AdminPage = () => {
     }));
     setArtists(artistsList);
 
-    // Obtener canciones
     const songsCollection = collection(db, "songs");
     const songsSnapshot = await getDocs(songsCollection);
     const songsList = songsSnapshot.docs.map((doc) => ({
@@ -57,7 +52,6 @@ const AdminPage = () => {
     fetchData();
   }, [isAdmin]);
 
-  // Función para agregar un género
   const handleAddGenre = async () => {
     if (!newGenre || !newGenreImage) return;
     const imageUrl = await uploadImageToCloudinary(newGenreImage);
@@ -67,7 +61,6 @@ const AdminPage = () => {
     fetchData();
   };
 
-  // Función para agregar un artista
   const handleAddArtist = async () => {
     if (!newArtist || !newArtistImage || !newSong.artistId) return;
     const imageUrl = await uploadImageToCloudinary(newArtistImage);
@@ -77,7 +70,6 @@ const AdminPage = () => {
     fetchData();
   };
 
-  // Función para agregar una canción
   const handleAddSong = async () => {
     if (!newSong.title || !newSongAudio || !newSong.artistId) return;
     const audioUrl = await uploadMusicToCloudinary(newSongAudio);
@@ -87,19 +79,16 @@ const AdminPage = () => {
     fetchData();
   };
 
-  // Función para eliminar un género
   const handleDeleteGenre = async (id: string) => {
     await deleteDoc(doc(db, "genres", id));
     fetchData();
   };
 
-  // Función para eliminar un artista
   const handleDeleteArtist = async (id: string) => {
     await deleteDoc(doc(db, "artists", id));
     fetchData();
   };
 
-  // Función para eliminar una canción
   const handleDeleteSong = async (id: string) => {
     await deleteDoc(doc(db, "songs", id));
     fetchData();
@@ -113,7 +102,6 @@ const AdminPage = () => {
     <div className="admin-container">
       <h1 className="admin-title">Panel de Administración</h1>
 
-      {/* Añadir Género */}
       <div className="admin-form">
         <h2>Añadir Género</h2>
         <input
@@ -132,7 +120,6 @@ const AdminPage = () => {
         <button className="admin-button" onClick={handleAddGenre}>Añadir Género</button>
       </div>
 
-      {/* Añadir Artista */}
       <div className="admin-form">
         <h2>Añadir Artista</h2>
         <select
@@ -160,7 +147,6 @@ const AdminPage = () => {
         <button className="admin-button" onClick={handleAddArtist}>Añadir Artista</button>
       </div>
 
-      {/* Añadir Canción */}
       <div className="admin-form">
         <h2>Añadir Canción</h2>
         <select
@@ -188,7 +174,6 @@ const AdminPage = () => {
         <button className="admin-button" onClick={handleAddSong}>Añadir Canción</button>
       </div>
 
-      {/* Mostrar Géneros */}
       <h2>Géneros</h2>
       <ul className="admin-list">
         {genres.map((genre) => (
@@ -199,7 +184,6 @@ const AdminPage = () => {
         ))}
       </ul>
 
-      {/* Mostrar Artistas */}
       <h2>Artistas</h2>
       <ul className="admin-list">
         {artists.map((artist) => (
@@ -210,7 +194,6 @@ const AdminPage = () => {
         ))}
       </ul>
 
-      {/* Mostrar Canciones */}
       <h2>Canciones</h2>
       <ul className="admin-list">
         {songs.map((song) => (

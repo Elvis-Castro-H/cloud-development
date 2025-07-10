@@ -18,7 +18,7 @@ const useArtists = (genreId: string) => {
     };
 
     fetchArtists();
-  }, [genreId]); // Se ejecuta cuando el género cambia
+  }, [genreId]); 
 
   return artists;
 };

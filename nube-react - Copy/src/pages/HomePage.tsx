@@ -1,5 +1,4 @@
 import useGenres from "../hooks/useGenres";
-import Card from "../components/Card";
 import "../styles/HomePage.css";
 
 const HomePage = () => {
