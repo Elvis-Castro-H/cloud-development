@@ -1,0 +1,97 @@
+/* Estilos generales para la ArtistPage */
+.artist-page-container {
+  background-color: #121212; /* Fondo oscuro como en Spotify */
+  color: #fff; /* Texto blanco */
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Título de la página */
+.artist-page-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #1db954; /* Verde típico de Spotify */
+  font-family: "Spotify Circular", sans-serif;
+}
+
+/* Contenedor de las canciones */
+.songs-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Columnas responsivas */
+  gap: 20px;
+  justify-items: center;
+  width: 100%;
+  max-width: 900px;
+  margin-top: 20px;
+}
+
+/* Estilo para cada canción (Card) */
+.song-card {
+  background-color: #282828; /* Fondo oscuro para la tarjeta */
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centrado de contenido */
+  justify-content: space-between;
+  width: 100%;
+  max-width: 320px; /* Controlamos el tamaño máximo de la tarjeta */
+}
+
+.song-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.8);
+}
+
+/* Imagen de la canción */
+.song-image {
+  width: 100%;
+  height: 250px;  /* Tamaño grande para la imagen */
+  object-fit: cover;  /* Mantiene la imagen proporcional */
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+/* Título de la canción */
+.song-title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 15px;
+  font-family: "Spotify Circular", sans-serif;
+}
+
+/* Estilo para el reproductor de audio */
+.audio-player {
+  width: 100%;
+  max-width: 350px; /* Reproductor con un tamaño limitado */
+  margin-top: 10px;
+  background-color: #1db954; /* Verde Spotify */
+  border-radius: 5px;
+}
+
+/* Estilo del texto si el navegador no soporta el reproductor */
+.audio-player-source {
+  color: #b3b3b3;
+  font-style: italic;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* Estilo de la barra de reproducción */
+audio {
+  width: 100%;
+  height: 30px;
+  background-color: #1db954;
+  border-radius: 10px;
+}

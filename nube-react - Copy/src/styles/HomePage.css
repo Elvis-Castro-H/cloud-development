@@ -1,0 +1,88 @@
+/* Estilos generales para la HomePage */
+.home-page-container {
+  background-color: #121212; /* Fondo oscuro como en Spotify */
+  color: #fff; /* Texto blanco */
+  padding: 20px;
+  min-height: 100vh;
+}
+
+/* Estilo para el título de la página */
+.home-page-title {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #1db954; /* Color verde típico de Spotify */
+  font-family: "Spotify Circular", sans-serif;
+}
+
+/* Contenedor de los géneros en formato grid */
+.genres-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Genera columnas que se ajustan */
+  gap: 20px;
+  justify-items: center;
+  margin-top: 20px;
+}
+
+/* Estilo para las tarjetas de género (Card) */
+.card-container {
+  background-color: #282828; /* Fondo de las tarjetas */
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;  /* Ancho completo de la celda de la grid */
+  max-width: 220px;  /* Máximo ancho de las tarjetas */
+  min-height: 320px;  /* Altura mínima fija para las tarjetas */
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Efecto hover en las tarjetas */
+.card-container:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.8);
+}
+
+/* Estilo para la imagen de cada género */
+.card-image {
+  width: 100%;
+  height: 150px;  /* Tamaño fijo para la imagen */
+  object-fit: cover;  /* Mantiene la imagen proporcional sin deformarla */
+  border-radius: 10px;
+}
+
+/* Título del género */
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  margin-top: 10px;
+  font-family: "Spotify Circular", sans-serif;
+}
+
+/* Estilo para el enlace 'Ver artistas' */
+.card-link {
+  font-size: 1rem;
+  color: #1db954; /* Color verde de Spotify */
+  margin-top: 15px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+/* Hover en el enlace 'Ver artistas' */
+.card-link:hover {
+  color: #1ed760; /* Un tono de verde más brillante */
+}
+
+/* Resaltar los botones de ver artistas */
+.card-container .card-link {
+  font-size: 1.1rem;
+  font-weight: 600;
+}

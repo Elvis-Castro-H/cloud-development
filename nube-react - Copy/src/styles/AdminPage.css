@@ -1,0 +1,77 @@
+/* Contenedor principal */
+.admin-container {
+  background-color: #121212;
+  color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+/* Títulos */
+.admin-title {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Formularios */
+.admin-form {
+  margin-bottom: 30px;
+}
+
+.admin-input, .admin-file-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #333;
+  border-radius: 4px;
+  background-color: #181818;
+  color: #fff;
+}
+
+.admin-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #1db954;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.admin-button:hover {
+  background-color: #1ed760;
+}
+
+/* Listas de Géneros, Artistas y Canciones */
+.admin-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.admin-list li {
+  padding: 10px;
+  background-color: #222;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.delete-button {
+  background-color: #e60000;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: #ff3333;
+}
+
+/* Mensajes de error */
+.error-message {
+  color: red;
+  font-size: 1.5rem;
+  text-align: center;
+}
